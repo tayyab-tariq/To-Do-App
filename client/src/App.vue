@@ -1,13 +1,19 @@
 <script setup>
   import { ref, onMounted, computed, watch} from 'vue'
   import Picture from './components/Picture.vue'
-  import List from './components/List.vue'
+  import Tasks from './components/Tasks.vue'
+  import Task from './components/Task.vue'
 
   const toDos = ref([]);
   const name = ref('');
-  const input_content = ref('');
+  var showComponent =  ref(true);
 
-  const addTodo = async () => {
+  const showTasks = () => {
+    showComponent.value = !showComponent.value;
+    // this.showComponent.value = !this.showComponent;
+  };
+
+  const addTodo = async (input_content) => {
     if (input_content.value.trim() === ''){
       return;
     }
@@ -117,19 +123,11 @@
       </h2>
       <Picture />
     </section>
+    <Task :addTodo="addTodo" :showTasks="showTasks"/>
 
-    <section class="create-todo">
-      <form @submit.prevent="addTodo">
-        <input
-          type="text" placeholder="To do today" 
-          v-model="input_content"
-        />        
-
-        <input type="submit" value="Add Task" />
-      </form>
-    </section>
-
-    <List :toDos="toDos" :deleteTodo="removeTodo" :updateTodo="updateTodo" />
+    <div v-show="showComponent">
+      <Tasks :toDos="toDos" :deleteTodo="removeTodo" :updateTodo="updateTodo" />    
+    </div>
     
   </main>
 </template>
