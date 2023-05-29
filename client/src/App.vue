@@ -150,5 +150,17 @@
 
 <style scoped>
 /* When the checkbox is checked, add a blue background */
+.greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Add this line to vertically center the content */
+  gap: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+  margin-top: -30%; /* Adjust the margin-top value to move the title upwards */
+}
 
 </style>
