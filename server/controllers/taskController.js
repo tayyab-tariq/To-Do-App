@@ -55,6 +55,7 @@ module.exports.deleteTask = async (req, res, next) => {
 
 
 module.exports.getTasks = async (req, res, next) => {
+
     try {
         const tasks = await Task.find().select([
             "task",
