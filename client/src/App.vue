@@ -3,6 +3,7 @@
   import Picture from './components/Picture.vue'
   import Tasks from './components/Tasks.vue'
   import Task from './components/Task.vue'
+  import API_BASE_URL from '../config';
 
   const toDos = ref([]);
   const name = ref('');
@@ -17,6 +18,9 @@
     if (input_content.value.trim() === ''){
       return;
     }
+
+    const endpoint = '/task/addTask';
+    const url = `${API_BASE_URL}${endpoint}`;
 
     const data = {
       task: input_content.value,
@@ -33,7 +37,7 @@
     };
 
     try {
-      const addTask = await fetch('http://localhost:3000/task/addTask', options);
+      const addTask = await fetch(url, options);
       const responseJson = await addTask.json();
       
       if (addTask.ok && responseJson.status === 'success'){
@@ -49,6 +53,10 @@
   };
 
   const updateTodo = async toDo => {
+
+    const endpoint = '/task/updateTask';
+    const url = `${API_BASE_URL}${endpoint}`;
+
     const options = {
       method: 'PATCH',
       headers: {
@@ -61,7 +69,7 @@
     };
 
     try {
-      const updateTask = await fetch('http://localhost:3000/task/updateTask', options);
+      const updateTask = await fetch(url, options);
       const responseJson = await updateTask.json();
       
       if (updateTask.ok && responseJson.status === 'success'){
@@ -77,6 +85,9 @@
 
   const removeTodo = async (toDo) => {
 
+    const endpoint = '/task/deleteTask';
+    const url = `${API_BASE_URL}${endpoint}`;
+    
     const options = {
       method: 'DELETE',
       headers: {
@@ -85,7 +96,7 @@
     };
 
     try {
-      const deleteTask = await fetch('http://localhost:3000/task/deleteTask', options);
+      const deleteTask = await fetch(url, options);
       const responseJson = await deleteTask.json();
       if (deleteTask.ok && responseJson.status ==='success'){
         toDos.value = toDos.value.filter(t => t !== toDo);
@@ -101,9 +112,13 @@
   }) 
 
   onMounted(async ()=> {
+
+    const endpoint = '/task/getTasks';
+    const url = `${API_BASE_URL}${endpoint}`;
+
     name.value = localStorage.getItem('name') || '';
     
-    const tasks = await fetch('http://localhost:3000/task/getTasks', {
+    const tasks = await fetch(url, {
       method: 'POST'
     });
     const responseJson = await tasks.json();
