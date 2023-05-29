@@ -20,10 +20,13 @@ module.exports.addTask = async (req, res, next) => {
 module.exports.updateTask = async (req, res, next) => {
     try {
         const taskId = req.headers.id;
-        const taskCompleted = req.body.isCompleted;       
+        const task = req.body.task;
+        const taskCompleted = req.body.isCompleted;
+        const completionTime = taskCompleted ? Date.now() : null;       
         const taskData = await Task.findByIdAndUpdate(taskId, {
+            task: task,
             isCompleted: taskCompleted,
-            completionTime: Date.now(),
+            completionTime: completionTime,
         }, { new: true });
 
         return res.json({

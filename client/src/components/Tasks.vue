@@ -14,7 +14,7 @@
           </label>
 
           <div class="todo-content">
-            <input type="text" v-model="toDo.task">
+            <input type="text" v-model="toDo.task" @change="updateTodo(toDo)">
           </div>
 
           <div class="actions" @click="deleteTodo(toDo)">

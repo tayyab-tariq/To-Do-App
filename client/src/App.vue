@@ -64,7 +64,8 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        isCompleted: toDo.isCompleted
+        isCompleted: toDo.isCompleted,
+        task: toDo.task,
       })
     };
 
