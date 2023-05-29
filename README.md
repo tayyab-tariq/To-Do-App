@@ -20,7 +20,7 @@ This project is a MEVN (MongoDB, Express.js, Vue.js, Node.js) application.
 
 1. Open a terminal and navigate to the `server` directory.
 2. Run the following command to install dependencies: **npm install**
-3. 3. After the installation is complete, start the server: **npm start**
+3. After the installation is complete, start the server: **npm start**
 4. The server will be accessible at `http://localhost:3000`.
 
 ## Additional Notes
