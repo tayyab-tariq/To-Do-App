@@ -5,7 +5,7 @@
   import Task from './components/Task.vue'
   import API_BASE_URL from '../config';
   import { toast } from 'vue3-toastify';
-  import 'vue3-toastify/dist/index.css'
+  import 'vue3-toastify/dist/index.css';
 
   const toDos = ref([]);
   const name = ref('');
