@@ -3,7 +3,10 @@
   import Picture from './components/Picture.vue'
   import Tasks from './components/Tasks.vue'
   import Task from './components/Task.vue'
+  import CustomConfirmBox from './components/CustomConfirmBox.vue';
   import API_BASE_URL from '../config';
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css'
 
   const toDos = ref([]);
   const name = ref('');
@@ -16,6 +19,9 @@
 
   const addTodo = async (input_content) => {
     if (input_content.value.trim() === ''){
+      toast.error('Please Enter a Task', {
+          autoClose: 1500,
+        });
       return;
     }
 
@@ -44,6 +50,9 @@
         const taskData = responseJson.createTask;
         toDos.value.unshift(taskData);
         input_content.value = '';
+        toast.success('Success', {
+          autoClose: 1000,
+        });
       }
     } catch (error) {
       console.error(error);
@@ -96,14 +105,16 @@
       }
     };
 
-    try {
-      const deleteTask = await fetch(url, options);
-      const responseJson = await deleteTask.json();
-      if (deleteTask.ok && responseJson.status ==='success'){
-        toDos.value = toDos.value.filter(t => t !== toDo);
-      } 
-    } catch (error) {
-      console.error(error);
+    if (window.confirm('Are you sure?')) {
+      try {
+        const deleteTask = await fetch(url, options);
+        const responseJson = await deleteTask.json();
+        if (deleteTask.ok && responseJson.status ==='success'){
+          toDos.value = toDos.value.filter(t => t !== toDo);
+        } 
+      } catch (error) {
+        console.error(error);
+      }
     }
     
   };

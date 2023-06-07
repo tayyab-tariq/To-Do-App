@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue3-toastify": "^0.1.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
