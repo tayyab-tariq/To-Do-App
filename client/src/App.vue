@@ -3,7 +3,6 @@
   import Picture from './components/Picture.vue'
   import Tasks from './components/Tasks.vue'
   import Task from './components/Task.vue'
-  import CustomConfirmBox from './components/CustomConfirmBox.vue';
   import API_BASE_URL from '../config';
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css'
