@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require("cors");
 const taskRoutes = require("./routes/taskRoutes");
 const connectDB = require('./config/db');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 require("dotenv").config();
 
 
@@ -10,8 +11,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
 app.use("/task", taskRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
     res.send('Hello, Worldsss!');
