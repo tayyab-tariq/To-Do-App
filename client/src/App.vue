@@ -6,6 +6,8 @@
   import API_BASE_URL from '../config';
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
+  import { getAllTasks, updateTask, addTask, removeTask } from './modules/toDoApi.js';
+
 
   const toDos = ref([]);
   const name = ref('');
@@ -24,29 +26,11 @@
       return;
     }
 
-    const endpoint = '/task/addTask';
-    const url = `${API_BASE_URL}${endpoint}`;
-
-    const data = {
-      task: input_content.value,
-      isCompleted: false,
-      completionTime: null
-    };
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    };
-
     try {
-      const addTask = await fetch(url, options);
-      const responseJson = await addTask.json();
+      const response = await addTask(input_content.value);
       
-      if (addTask.ok && responseJson.status === 'success'){
-        const taskData = responseJson.createTask;
+      if (response.status === 'success'){
+        const taskData = response.createTask;
         toDos.value.unshift(taskData);
         input_content.value = '';
         toast.success('Success', {
@@ -54,6 +38,9 @@
         });
       }
     } catch (error) {
+      toast.error('Server Error', {
+          autoClose: 1500,
+        });
       console.error(error);
     }
      
@@ -62,29 +49,19 @@
 
   const updateTodo = async toDo => {
 
-    const endpoint = '/task/updateTask';
-    const url = `${API_BASE_URL}${endpoint}`;
-
-    const options = {
-      method: 'PATCH',
-      headers: {
-        'id': toDo._id,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        isCompleted: toDo.isCompleted,
-        task: toDo.task,
-      })
-    };
-
     try {
-      const updateTask = await fetch(url, options);
-      const responseJson = await updateTask.json();
+      const responseJson = await updateTask(toDo);
       
-      if (updateTask.ok && responseJson.status === 'success'){
+      if (responseJson.status === 'success'){
         toDo.isCompleted = responseJson.isCompleted;
+        toast.success('Record Updated', {
+          autoClose: 1000,
+        });
       }  
     } catch (error) {
+      toast.error('Server Error', {
+          autoClose: 1500,
+        });
       console.error(error);
       toDo.isCompleted = !toDo.isCompleted;
     }
@@ -94,24 +71,19 @@
 
   const removeTodo = async (toDo) => {
 
-    const endpoint = '/task/deleteTask';
-    const url = `${API_BASE_URL}${endpoint}`;
-    
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'id': toDo._id
-      }
-    };
-
     if (window.confirm('Are you sure?')) {
       try {
-        const deleteTask = await fetch(url, options);
-        const responseJson = await deleteTask.json();
-        if (deleteTask.ok && responseJson.status ==='success'){
+        const responseJson = await removeTask(toDo);
+        if (responseJson.status ==='success'){
           toDos.value = toDos.value.filter(t => t !== toDo);
+          toast.success('Record Deleted', {
+          autoClose: 1000,
+        });
         } 
       } catch (error) {
+        toast.error('Server Error', {
+          autoClose: 1500,
+        });
         console.error(error);
       }
     }
@@ -127,15 +99,9 @@
     const endpoint = '/task/getTasks';
     const url = `${API_BASE_URL}${endpoint}`;
 
-    name.value = localStorage.getItem('name') || '';
-    
-    const tasks = await fetch(url, {
-      method: 'POST'
-    });
-    const responseJson = await tasks.json();
-    toDos.value = responseJson || [];
+    const response = await getAllTasks();
 
-    // toDos.value = JSON.parse(localStorage.getItem('toDos')) || [];
+    toDos.value = response || [];
   })
 
 </script>
